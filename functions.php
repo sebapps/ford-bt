@@ -336,11 +336,16 @@ function get_filtered_expenses($month, $year) {
 			$table_items.= "<td>".$row['startdatetime']."</td>";
 			$table_items.= "<td>".$row['startmileage']."</td>";
 			$table_items.= "<td>".$row['startfuellevel']."</td>";
-			$table_items.= "<td>".$row['enddatetime']."</td>";
-			$table_items.= "<td>".$row['endmileage']."</td>";
-			$table_items.= "<td>".$row['endfuellevel']."</td>";
-			$table_items.= "<td>".number_format(($row['endmileage'] - $row['startmileage']), 2)."</td>";
-			$table_items.= "<td>".number_format(($row['startfuellevel'] - $row['endfuellevel']), 2)."</td><tr>";
+			if($row['trip_status']=='o') {
+				$table_items.= "<td style='text-align:center' colspan='5'>Trip Ongoing</td><tr>";
+			}
+			else {
+				$table_items.= "<td>".$row['enddatetime']."</td>";
+				$table_items.= "<td>".$row['endmileage']."</td>";
+				$table_items.= "<td>".$row['endfuellevel']."</td>";
+				$table_items.= "<td>".number_format(($row['endmileage'] - $row['startmileage']), 2)."</td>";
+				$table_items.= "<td>".number_format(($row['startfuellevel'] - $row['endfuellevel']), 2)."</td><tr>";
+			}
 			$counter++;
 		}
 		$table_html = str_replace("<<ITEMS>>", $table_items, $table_html);
@@ -385,11 +390,16 @@ function get_expenses_array($month, $year) {
 			$trip[] = $row['startdatetime'];
 			$trip[] = $row['startmileage'];
 			$trip[] = $row['startfuellevel'];
-			$trip[] = $row['enddatetime'];
-			$trip[] = $row['endmileage'];
-			$trip[] = $row['endfuellevel'];
-			$trip[] = number_format(($row['endmileage'] - $row['startmileage']), 2);
-			$trip[] = number_format(($row['startfuellevel'] - $row['endfuellevel']), 2);
+			if($row['trip_status']=='o') {
+				$trip[] = "Trip Ongoing";
+			}
+			else {
+				$trip[] = $row['enddatetime'];
+				$trip[] = $row['endmileage'];
+				$trip[] = $row['endfuellevel'];
+				$trip[] = number_format(($row['endmileage'] - $row['startmileage']), 2);
+				$trip[] = number_format(($row['startfuellevel'] - $row['endfuellevel']), 2);
+			}
 			$trips[] = $trip;
 			$counter++;
 		}
